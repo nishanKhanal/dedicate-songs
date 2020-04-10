@@ -1,0 +1,125 @@
+{% extends "posts/base.html" %}
+{% load tz %}
+{% block content %}
+    {% if page_obj.number == 1 %}
+        <div style="margin: 3vh 0" class="jumbotron">
+            <h1 class="display-4">Welcome!</h1>
+            <p class="lead">This is a very simple webapp which tries to simulate the action as we used to dedicate songs to someone special along with a special message through Radio and TV programmes.</p>
+            <hr class="my-4">
+            <p>This app is created with Django out of Boredom. The source code is availabe at my <a href="https://github.com/nishankhanal"> github page. </a></p>
+            <p class="lead">
+            <a class="btn btn-primary btn-lg" href="{% url 'posts:post_new' %}" role="button">Dedicate A Song</a>
+            
+            </p>
+        </div>
+
+        <h1>Recently Dedicated Songs!</h1>
+    {% else %}
+    {% endif %}
+    
+    
+    {% for post in object_list %}
+        <div style="background: #f5f5f5; padding: 10px; margin: 4vh 0 " class="card mb-8" >
+          <div class="row no-gutters">
+            <div class="col-md-6">
+              {% comment %} <img src="..." class="card-img" alt="..."> {% endcomment %}
+              <div width=100% height=100% class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src={{post.embed_link}} allowfullscreen></iframe>
+               </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card-body">
+                <h5 class="card-title">{{ post.video_title }}</h5>
+                <p class="card-text"> From <strong>{{post.post_from}}</strong> To <strong>{{ post.post_to }}</strong> &middot; <small class="text-muted" >{{ post.date_created|timezone:"Asia/Kathmandu" }}</small></p>
+                <p class="card-text"> {{ post.message }} </p>
+                <p style="margin-bottom: 0px" class="card-text"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    {% endfor %}
+
+{% comment %}      
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+           page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div> {% endcomment %}
+{% if page_obj %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous  %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.number|add:"-1" }}</a></li>
+    {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+    {% endif %}
+
+    <li class="page-item"><a style="background: #ddd" class="page-link" href="">{{ page_obj.number }}</a></li>
+
+
+    {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.number|add:"1" }}</a></li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}&search={{ search_string }}">Next</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Next</a>
+        </li>
+    {% endif %}
+  </ul>
+</nav>
+{% else %}
+{% endif %}
+
+{% endblock content %}
+
+
+{% comment %} <h1>Recent Posts</h1>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LqI78S14Wgg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% for post in object_list %}
+    <p>From: {{ post.post_from }}</p>
+    <p>to: {{ post.post_to }}</p>
+    <p>message: {{ post.message }}</p>
+    <p>date_created: {{ post.date_created }}</p>
+    <p>song_description: {{ post.song_description }}</p>
+    <iframe src={{ post.embed_link}} width=640 height=320></iframe>
+    <p><a href=>Video link</a></p>
+    <p>video_link: {{ post.video_link }}</p>
+    <br>
+    <br>
+{% endfor %}
+
+<div class="embed-responsive embed-responsive-16by9">
+  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
+</div>
+
+{% endcomment %}
+
+Examples:
+<ul>
+  <li>Believer</li>
+  <li>Bimbaakash Najeek</li>
+  <li>Working Class Hero by Green Day</li>
+  <li>Tmro Nyano</li>
+  <li>Rap God</li>
+  <li>Mayama by Sushant Kc</li>
+</ul>
