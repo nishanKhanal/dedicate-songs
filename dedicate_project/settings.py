@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+import django_heroku 
+
 import environ 
 env = environ.Env()
 environ.Env.read_env()  # reading .env file
@@ -135,3 +137,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 YOUTUBE_DATA_API_KEY = env.str('YOUTUBE_DATA_API_KEY', 'defaultvalueifkeynotfound')
 
+django_heroku.settings(locals())
