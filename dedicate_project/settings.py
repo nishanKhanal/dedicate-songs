@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-import django_heroku 
 
 import environ 
 env = environ.Env()
@@ -32,7 +31,7 @@ SECRET_KEY = env.str('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['samarpann.herokuapp.com']
+ALLOWED_HOSTS = ['*','samarpann.herokuapp.com']
 
 
 # Application definition
@@ -136,5 +135,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 YOUTUBE_DATA_API_KEY = env.str('YOUTUBE_DATA_API_KEY', 'defaultvalueifkeynotfound')
-
-django_heroku.settings(locals())
