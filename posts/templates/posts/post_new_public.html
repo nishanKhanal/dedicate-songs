@@ -1,0 +1,14 @@
+{% extends "posts/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+    New Dedication
+{% endblock title %}
+
+{% block content %}
+    <h2 style="margin: 3vh 0">Dedicate a song to your loved ones</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-success" type="submit">Create</button>
+    </form>
+{% endblock content %}
