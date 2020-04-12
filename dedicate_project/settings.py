@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     #local apps
     'posts.apps.PostsConfig',
+    'users.apps.UsersConfig',
 
     #3rd party apps
     'crispy_forms'
@@ -135,3 +136,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 YOUTUBE_DATA_API_KEY = env.str('YOUTUBE_DATA_API_KEY', 'defaultvalueifkeynotfound')
+
+AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_REDIRECT_URL = 'posts:post_new'
