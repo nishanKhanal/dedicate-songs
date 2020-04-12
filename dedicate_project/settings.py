@@ -139,3 +139,4 @@ YOUTUBE_DATA_API_KEY = env.str('YOUTUBE_DATA_API_KEY', 'defaultvalueifkeynotfoun
 
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_REDIRECT_URL = 'posts:post_new'
+LOGOUT_REDIRECT_URL = 'posts:post_list'
