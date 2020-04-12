@@ -2,14 +2,17 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import (
     CreateView,
-    ListView
+    ListView,
+    DetailView,
+    UpdateView, 
+    DeleteView
 )
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .models import Post
 from .forms import PostForm, PostFormPublic
@@ -137,3 +140,73 @@ class PostCreateViewPublic(CreateView):
         # remember the import: from django.http import HttpResponseRedirect
         return HttpResponseRedirect(self.get_success_url())
 
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "posts/post_detail.html"
+    context_object_name = 'post'
+
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    template_name = "posts/post_update.html"
+    login_url = reverse_lazy('login')
+    fields = ['post_to', 'message', 'song_description']
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.post_from == self.request.user
+
+
+    def form_valid(self, form):
+        self.object = form.instance
+
+        search_url = "https://www.googleapis.com/youtube/v3/search"
+
+        search_params = {
+            'part': 'snippet',
+            'q' : self.object.song_description,
+            'key': settings.YOUTUBE_DATA_API_KEY,
+            'maxResults': 1,
+            'type': 'video'
+            
+        }
+
+        print(self.object.song_description)
+        response = requests.get(search_url,params=search_params)
+        video_Id = response.json()['items'][0]['id']['videoId']
+        print(video_Id)
+        self.object.video_link =f"https://www.youtube.com/watch?v={video_Id}"
+        self.object.embed_link = f"https://www.youtube.com/embed/{video_Id}?controls=1"
+
+        video_url = "https://www.googleapis.com/youtube/v3/videos"
+        video_params = {
+            'part': 'snippet',
+            'id': video_Id,
+            'maxResults':1,
+            'key': settings.YOUTUBE_DATA_API_KEY,
+        }
+        response = requests.get(video_url,params=video_params)
+        self.object.video_title = response.json()['items'][0]['snippet']['title']
+
+        self.object.post_from = self.request.user
+        # self.object.post_from_id = self.request.user.id
+
+        self.object.save()
+        # do something with self.object
+        # remember the import: from django.http import HttpResponseRedirect
+        return HttpResponseRedirect(self.get_success_url())
+
+
+
+class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin ,DeleteView):
+        model = Post
+        template_name = "posts/post_delete.html"
+        context_object_name = "post"
+        success_url = reverse_lazy('posts:post_list')
+
+        def test_func(self):
+            obj = self.get_object()
+            return obj.post_from == self.request.user
+    
+
+def post_new_public_confirm(request):
+    return render(request,'posts/post_new_public_confirm.html')

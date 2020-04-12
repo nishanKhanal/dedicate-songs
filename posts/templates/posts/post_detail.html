@@ -1,0 +1,46 @@
+{% extends "posts/base.html" %}
+{% load tz %}
+
+{% block title %}
+    Post Detail
+{% endblock title %}
+
+{% block content %}
+<div style="background: #f5f5f5; padding: 0px; margin: 4vh 0 " class="card">
+  <div style="background: #f5f5f5; padding: 5px; margin: 4vh 0 class="card-body">
+    <div style="background: #f5f5f5; border: none;" class="card mb-8" >
+          <div class="row no-gutters">
+            <div class="col-md-6">
+              <div width=100% height=100% class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src={{post.embed_link}} allowfullscreen></iframe>
+               </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card-body">
+                <h5 class="card-title">{{ post.video_title }}</h5>
+                <p class="card-text">
+                From
+                  <strong>
+                    {% if post.post_from.username == "publicuser" %}
+                      {{ post.post_from_public }}
+                    {% else %}
+                      {{ post.post_from.get_full_name }}
+                    {% endif %}
+                  </strong> To <strong>{{ post.post_to }}</strong>. <br><small class="text-muted" > &middot;{{ post.date_created|timezone:"Asia/Kathmandu" }} &middot;</small></p>
+                <p class="card-text"> {{ post.message }}</p>
+                <p style="margin-bottom: 0px" class="card-text"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+  <div class="card-footer text-muted text-center">
+    {% if post.post_from == user %}
+      <a href="{% url 'posts:post_update' post.pk %}">Edit</a> | 
+      <a href="{% url 'posts:post_delete' post.pk %}">Delete</a> 
+    {% else %}
+    {% endif %}
+    
+  </div>
+</div>
+{% endblock content %}

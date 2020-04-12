@@ -1,0 +1,19 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}
+    Confirm
+{% endblock title %}
+
+{% block content %}
+<div style="padding: 4vh 0">
+
+    <div class="alert alert-info" role="alert">
+        <a href="{% url 'login' %}" class="alert-link">Log In</a> so that you have complete control over your posts. <br>
+        <small class="text-muted" >Don't have an account? It only takes about half a minute to <a href="{% url 'users:signup' %}" class="alert-link">Register/Sign Up.</a></small>
+    </div>
+    <h2 class="display-5">Dedicate without Logging in?</h2>
+    <div class="alert alert-danger" role="alert">
+        You won't be able to delete or edit these posts later on. <a href="{% url 'posts:post_new_public' %}" class="alert-link">Continue without logging in.</a>
+    </div>
+</div>
+{% endblock content %}
