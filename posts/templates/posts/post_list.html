@@ -51,7 +51,7 @@
                       {{ post.post_from.get_full_name }}
                     {% endif %}
                   </strong> To <strong>{{ post.post_to }}</strong>. <br><small class="text-muted" > &middot;{{ post.date_created|timezone:"Asia/Kathmandu" }} &middot;</small></p>
-                <p class="card-text"> {{ post.message }}</p>
+                <span class="card-text text-muted"> With the message: </span> <p class="lead card-text"> {% autoescape off %} {{ post.message }} {% endautoescape %} </p>
                 <p style="margin-bottom: 0px" class="card-text"></p>
               </div>
             </div>
