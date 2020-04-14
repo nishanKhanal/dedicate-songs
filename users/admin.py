@@ -8,8 +8,7 @@ from posts.models import Post
 
 class PostInline(admin.StackedInline):
     model = Post
-    extra = 1
-
+    extra = 0
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm

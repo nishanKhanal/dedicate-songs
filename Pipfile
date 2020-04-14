@@ -12,6 +12,7 @@ django-crispy-forms = "*"
 django-environ = "*"
 gunicorn = "==19.9.0"
 django-heroku = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"
