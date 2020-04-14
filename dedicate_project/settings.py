@@ -11,12 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
-
-import environ 
-env = environ.Env()
-environ.Env.read_env()  # reading .env file
-
+import django_heroku
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,13 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = os.environ['SECRET_KEY']
 #'z2v7y)a!1_lzvv$3tah*-!%*h5$q_9r18k+=z542p&*xg1#@!6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', default=False)
+DEBUG = (os.environ.get('DEBUG_VALUE') == "True")
 
-ALLOWED_HOSTS = ['*','samarpann.herokuapp.com']
+ALLOWED_HOSTS = ['samarpann.herokuapp.com']
 
 
 # Application definition
@@ -88,8 +83,12 @@ WSGI_APPLICATION = 'dedicate_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASS'),
+        'HOST': 'localhost',
+        'PORT':'',
     }
 }
 
@@ -135,8 +134,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-YOUTUBE_DATA_API_KEY = env.str('YOUTUBE_DATA_API_KEY', 'defaultvalueifkeynotfound')
+YOUTUBE_DATA_API_KEY = os.environ.get('YOUTUBE_DATA_API_KEY')
 
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_REDIRECT_URL = 'posts:post_new'
 LOGOUT_REDIRECT_URL = 'posts:post_list'
+
+django_heroku.settings(locals())
