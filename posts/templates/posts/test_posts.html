@@ -1,37 +1,12 @@
 {% extends "posts/base.html" %}
 {% load tz %}
 {% block content %}
-    {% if page_obj.number == 1 %}
-        <div style="margin: 3vh 0" class="jumbotron">
-            <h1 class="display-4">
-              Welcome{% if user.is_authenticated %}
-                {{ user.username }}!
-              {% else %} stranger!{% endif %}
-            </h1>
-            <p class="lead">This is a very simple webapp which tries to simulate the action as we used to dedicate songs to someone special along with a special message through Radio and TV programmes.</p>
-            <hr class="my-4">
-            <p>This app is created with Django out of Boredom. The source code is availabe at my <a href="https://github.com/nishanKhanal/dedicate-songs"> github page. </a></p>
-            <p class="lead">
-            {% if user.is_authenticated %}
-              <a class="btn btn-primary btn-lg" href="{% url 'posts:post_new' %}" role="button">Dedicate A Song</a>
-            {% else %}
-              <a  style="width: 190px;" class="btn btn-primary btn-lg" href="{% url 'posts:post_new_public_confirm' %}" role="button">Dedicate A Song</a>
-              <div style="width: 190px;" class="alert alert-info text-muted text-center" role="alert">
-              <a href="{% url 'login' %}" class="alert-link">Log In</a> |  
-              <a href="{% url 'users:signup' %}" class="alert-link">Sign Up.</a></small>
-             </div>
-            {% endif %}
-            </p>
-            
-        </div>
 
-        <h1>Recently Dedicated Songs!</h1>
-        <div class="alert alert-warning" role="alert">
-          Some of the posts were identified as test posts (not genuine). They are listed in <a href="{% url 'posts:test_posts' %}" class="alert-link">Test Post Page.</a>
-        </div>
-    {% else %}
-    {% endif %}
-    
+<div class="display5"></div>
+    <h1 class="display-5">Test Posts</h1>
+    <div class="alert alert-warning" role="alert">
+        The system identified these posts as Test Posts (not genuine). So they are listed on this page. Go back to <a href="{% url 'posts:post_list' %}" class="alert-link">All posts</a>
+    </div>
 {% for post in object_list %}  
 <div style="background: #f5f5f5; padding: 0px; margin: 4vh 0 " class="card">
   <div style="background: #f5f5f5; padding: 5px; margin: 4vh 0 class="card-body">
