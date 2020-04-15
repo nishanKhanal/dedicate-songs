@@ -11,7 +11,13 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('login')
     form_class = CustomUserCreationForm
     template_name = "users/signup.html"
+    redirect_authenticated_user=True
 
+    #redirect if the user is authenticated
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated :
+            return HttpResponseRedirect(reverse_lazy('posts:post_list'))
+        return super(SignUpView, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
         self.object = form.save()
