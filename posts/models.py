@@ -14,6 +14,7 @@ class Post(models.Model):
     song_description = models.CharField(max_length=200)
     date_created = models.DateTimeField(auto_now_add=True)
     video_title = models.CharField(max_length=250, default='Title of this song')
+    test_post = models.BooleanField(default=False)
 
     def __str__(self):
         if self.post_from.username == "publicuser":

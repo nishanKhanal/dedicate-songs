@@ -7,7 +7,8 @@ from .views import (
     PostDetailView,
     PostUpdateView,
     PostDeleteView,
-    post_new_public_confirm
+    post_new_public_confirm,
+    TestPostListView,
 )
 
 app_name = "posts"
@@ -20,5 +21,6 @@ urlpatterns = [
     path('new/', PostCreateView.as_view(), name='post_new'),
     path('new_public/',PostCreateViewPublic.as_view(), name="post_new_public" ),
     path('search/', search,name="search"),
-    path('new_public_confirm/',post_new_public_confirm, name="post_new_public_confirm" )
+    path('new_public_confirm/',post_new_public_confirm, name="post_new_public_confirm" ),
+    path('test_posts/',TestPostListView.as_view(), name="test_posts" )
 ]

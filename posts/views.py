@@ -41,8 +41,20 @@ def search(request):
 class PostListView(ListView):
     model = Post
     template_name = "posts/post_list.html"
-    ordering = ['-date_created']
+    # ordering = ['-date_created']
+    def get_queryset(self):
+        posts = Post.objects.filter(test_post=False).order_by('-date_created')
+        return posts
     paginate_by = 8
+
+class TestPostListView(ListView):
+    model = Post
+    template_name = "posts/test_posts.html"
+    def get_queryset(self):
+        posts = Post.objects.filter(test_post=True).order_by('-date_created')
+        return posts
+    paginate_by = 8
+
 
 
 class PostCreateView(LoginRequiredMixin ,CreateView):
@@ -134,6 +146,16 @@ class PostCreateViewPublic(CreateView):
         finally:
             self.object.post_from = publicuser
         self.object.post_from_public = form.cleaned_data['post_from_public']
+
+
+        # Identifying test posts
+        condition1 = self.object.post_from_public == self.object.post_to == self.object.message
+        condition2 = 'test' in [self.object.post_from_public.lower(), self.object.post_to.lower()]
+        if condition1 or condition2:
+            print('something')
+            self.object.test_post = True
+            self.object.save()
+            return HttpResponseRedirect(reverse_lazy('posts:test_posts'))
         
         self.object.save()
         # do something with self.object
